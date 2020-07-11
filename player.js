@@ -11,11 +11,11 @@ class Player{
         this.sprite.collide(edges[2]);
         this.sprite.collide(edges[3]);
         
-        if(keyIsDown(UP_ARROW)){
-            this.sprite.y = this.sprite.y-5;
+        if(keyWentDown(UP_ARROW)){
+            this.sprite.y = this.sprite.y-20;
         }
-        if(keyIsDown(DOWN_ARROW)){
-            this.sprite.y = this.sprite.y+5;
+        if(keyWentDown(DOWN_ARROW)){
+            this.sprite.y = this.sprite.y+20;
        
     }
     }

@@ -1,7 +1,7 @@
 class Game{
     constructor(){
         this.playButton = createSprite(width/2+50,height-200);
-        this.playImage = loadImage("image/play.png");
+        this.playImage = loadImage("image/start1.png");
         this.playButton.addImage(this.playImage);
         this.playButton.scale = 0.5;
 
@@ -11,7 +11,7 @@ class Game{
         this.gameOver.visible = false;
 
         this.win1 = createSprite(width/2,height/2);
-        this.winImg = loadImage("image/download.jpg");
+        this.winImg = loadImage("image/win.png");
         this.win1.addImage(this.winImg);
         this.win1.visible = false;
 
@@ -62,14 +62,15 @@ class Game{
 
     start(){
         player.sprite.visible = false;
-        textSize(25);
+        textSize(65);
+        textStyle(BOLD);
         fill("red");
         
-        text("ONE MAN ARMY",width/2-100,height/2-100);
+        text("ONE MAN ARMY",width/2-200,height/2-200);
         textSize(20);
-        fill("blue");
+        fill("white");
         text("VIKRAM WAS THE COMMANDER OF THE NORTH WING OF HIS COUNTRY . ONE NIGHT THE ENEMIES AMBUSHED HIS UNIT AT MIDNIGHT...",width/2-750,height/2-70);
-        text(" HE WAS THE ONLY SURVIVOR BECAUSE HE WAS IN THE UNDREGROUND TUNNEL... AFTER COIMNG UP HE REALIZES THAT HIS COUNTRY IS UNDER ATTACK...",width/2-750,height/2-35);
+        text(" HE WAS THE ONLY SURVIVOR BECAUSE HE WAS IN THE UNDREGROUND TUNNEL,AFTER COIMNG UP HE REALIZES THAT HIS COUNTRY IS UNDER ATTACK...",width/2-760,height/2-35);
         text("WHAT WILL HAPPEN NEXT  IS IN YOUR HANDS.....",width/2-400,height/2) 
         
         textSize(20);
@@ -100,6 +101,7 @@ class Game{
             this.spawnWave2();
         }
         if(this.wave2Count === 6) this.flag2 = 1;
+        console.log(this.wave2Count);
 
         if(this.flag2 === 1 && this.wave3Count<5 ){
             this.spawnWave3();
@@ -111,30 +113,37 @@ class Game{
         this.shootSound.play();
 
         }
-        for(var i = 0;i < 5;i ++){ 
-        if(this.bulletGroup.isTouching(this.wave1Group)){
-            this.bulletGroup.get(i).destroy();
+        for(var i = 0;i < this.wave1Group.length;i ++){ 
+        for(var q  =0;q<this.bulletGroup.length;q ++){
+        if(this.wave1Group.get(i).isTouching(this.bulletGroup.get(q))){
+            
+            this.bulletGroup.get(q).destroy();
             this.wave1Group.get(i).destroy();
             this.enemyCount = this.enemyCount+1;
         }
     }
+    }
 
-    for(var i = 0;i < 5;i ++){ 
-        if(this.bulletGroup.isTouching(this.wave2Group)){
-            this.bulletGroup.get(i).destroy();
-            this.wave2Group.get(i).destroy();
+    for(var j = 0;j < this.wave2Group.length;j ++){ 
+        for(var t  =0;t<this.bulletGroup.length;t++){
+        if(this.wave2Group.get(j).isTouching(this.bulletGroup.get(t))){
+            this.bulletGroup.get(t).destroy();
+            this.wave2Group.get(j).destroy();
             this.enemyCount = this.enemyCount+1;
         }
     }
+    }
 
-    for(var i = 0;i < 5;i ++){ 
-        if(this.bulletGroup.isTouching(this.wave3Group)){
-            this.bulletGroup.get(i).destroy();
-            this.wave3Group.get(i).destroy();
+    for(var p = 0;p < this.wave3Group.length;p ++){ 
+        for(var s  =0;s<this.bulletGroup.length;s ++){
+        if(this.wave3Group.get(p).isTouching(this.bulletGroup.get(s))){
+            this.bulletGroup.get(s).destroy();
+            this.wave3Group.get(p).destroy();
             this.enemyCount = this.enemyCount+1;
         }
     }
-    if(this.enemyCount === 16){
+    }
+    if(this.enemyCount === 36){
         gameState = 3;
     }
     console.log(this.enemyCount);
@@ -154,7 +163,7 @@ class Game{
         var bullet = createSprite(player.sprite.x+110,player.sprite.y-7,10,10);
         bullet.addImage(this.bulletImg);
         bullet.scale = 0.1;
-        bullet.velocityX = 30;
+        bullet.velocityX = 10;
         bullet.depth = player.sprite.depth;
         player.sprite.depth += 1;
         bullet.lifeTime = floor(width/30);
@@ -190,6 +199,15 @@ class Game{
             this.wave2Count +=1;
             this.wave2Group.add(enemy2);
 
+            var enemyLayer = createSprite(enemy2.x,enemy2.y,10,10);
+            enemyLayer.addImage(this.enemy2Img);
+            enemyLayer.scale = 0.5
+            
+            enemyLayer.velocityX = -5;
+            this.wave2Count +=1;
+            this.wave2Group.add(enemyLayer);
+            
+
 
 
         }
@@ -206,6 +224,30 @@ class Game{
             this.wave3Count +=1;
             this.wave3Group.add(enemy3);
 
+            var enemyLayer1 = createSprite(enemy3.x,enemy3.y,10,10);
+            enemyLayer1.addImage(this.enemy3Img);
+            enemyLayer1.scale = 0.5
+            enemyLayer1.velocityX = -5;
+            this.wave3Group.add(enemyLayer1);
+
+            var enemyLayer2 = createSprite(enemy3.x,enemy3.y,10,10);
+            enemyLayer2.addImage(this.enemy3Img);
+            enemyLayer2.scale = 0.5
+            enemyLayer2.velocityX = -5  
+            this.wave3Group.add(enemyLayer2);
+
+            var enemyLayer3 = createSprite(enemy3.x,enemy3.y,10,10);
+            enemyLayer3.addImage(this.enemy3Img);
+            enemyLayer3.scale = 0.5;
+            enemyLayer3.velocityX = -5;
+            this.wave3Group.add(enemyLayer3);
+
+
+            var enemyLayer4 = createSprite(enemy3.x,enemy3.y,10,10);
+            enemyLayer4.addImage(this.enemy3Img);
+            enemyLayer4.scale = 0.5
+            enemyLayer4.velocityX = -5;
+            this.wave3Group.add(enemyLayer4);
 
 
         }
