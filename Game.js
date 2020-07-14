@@ -90,21 +90,54 @@ class Game{
         this.downKey.visible = false;
         this.spaceKey.visible = false;
         
-        if(this.wave1Count < 5){ 
-        this.spawnWave1();
+        if(this.wave1Count <= 5 && this.flag1 ===0){ 
+       
+        for(var q  =0;q<this.bulletGroup.length;q ++){
+        for(var i = 0;i < this.wave1Count-this.enemyCount;i ++){ 
+           
+            if(this.bulletGroup.get(q).isTouching(this.wave1Group.get(i))){
+                
+                this.bulletGroup.get(q).destroy();
+                this.wave1Group.get(i).destroy();
+                this.enemyCount = this.enemyCount+1;
+            }
+        }
+        }
+         this.spawnWave1();
+        console.log(this.wave1Count);
         
+        if(this.wave1Count === 5) this.flag1 = 1;
 
         }
-       if(this.wave1Count === 5) this.flag1 = 1;
+       
 
         if(this.flag1 === 1 && this.wave2Count<=5){
             this.spawnWave2();
+
+            for(var j = 0;j < this.wave2Group.length;j ++){ 
+                for(var t  =0;t<this.bulletGroup.length;t++){
+                if(this.wave2Group.get(j).isTouching(this.bulletGroup.get(t))){
+                    this.bulletGroup.get(t).destroy();
+                    this.wave2Group.get(j).destroy();
+                    this.enemyCount = this.enemyCount+1;
+                }
+            }
+            }
         }
         if(this.wave2Count === 6) this.flag2 = 1;
         console.log(this.wave2Count);
 
         if(this.flag2 === 1 && this.wave3Count<5 ){
             this.spawnWave3();
+            for(var p = 0;p < this.wave3Group.length;p ++){ 
+                for(var s  =0;s<this.bulletGroup.length;s ++){
+                if(this.wave3Group.get(p).isTouching(this.bulletGroup.get(s))){
+                    this.bulletGroup.get(s).destroy();
+                    this.wave3Group.get(p).destroy();
+                    this.enemyCount = this.enemyCount+1;
+                }
+            }
+            }
         }
 
         
@@ -113,36 +146,11 @@ class Game{
         this.shootSound.play();
 
         }
-        for(var i = 0;i < this.wave1Group.length;i ++){ 
-        for(var q  =0;q<this.bulletGroup.length;q ++){
-        if(this.wave1Group.get(i).isTouching(this.bulletGroup.get(q))){
-            
-            this.bulletGroup.get(q).destroy();
-            this.wave1Group.get(i).destroy();
-            this.enemyCount = this.enemyCount+1;
-        }
-    }
-    }
+       
 
-    for(var j = 0;j < this.wave2Group.length;j ++){ 
-        for(var t  =0;t<this.bulletGroup.length;t++){
-        if(this.wave2Group.get(j).isTouching(this.bulletGroup.get(t))){
-            this.bulletGroup.get(t).destroy();
-            this.wave2Group.get(j).destroy();
-            this.enemyCount = this.enemyCount+1;
-        }
-    }
-    }
+   
 
-    for(var p = 0;p < this.wave3Group.length;p ++){ 
-        for(var s  =0;s<this.bulletGroup.length;s ++){
-        if(this.wave3Group.get(p).isTouching(this.bulletGroup.get(s))){
-            this.bulletGroup.get(s).destroy();
-            this.wave3Group.get(p).destroy();
-            this.enemyCount = this.enemyCount+1;
-        }
-    }
-    }
+    
     if(this.enemyCount === 36){
         gameState = 3;
     }
@@ -174,12 +182,12 @@ class Game{
 
     }
     spawnWave1(){
-        if(frameCount%50 === 0){
+        if(frameCount%70 === 0 && this.wave1Count<=5){
             var enemy1 = createSprite(width+100,height/2,10,10);
             enemy1.addImage(this.enemy1Img);
             enemy1.y = random(100,height-100);
             enemy1.velocityX = -5;
-            this.wave1Count +=1;
+            this.wave1Count = this.wave1Count+1;
             this.wave1Group.add(enemy1);
 
 
@@ -191,7 +199,7 @@ class Game{
 
     spawnWave2(){
         if(frameCount%70 === 0){
-            var enemy2 = createSprite(width+100,height/2,10,10);
+            var enemy2 = createSprite(width+350,height/2,10,10);
             enemy2.addImage(this.enemy2Img);
             enemy2.scale = 0.5
             enemy2.y = random(100,height-100);
@@ -204,7 +212,7 @@ class Game{
             enemyLayer.scale = 0.5
             
             enemyLayer.velocityX = -5;
-            this.wave2Count +=1;
+            
             this.wave2Group.add(enemyLayer);
             
 
@@ -215,8 +223,8 @@ class Game{
 
 
     spawnWave3(){
-        if(frameCount%100 === 0){
-            var enemy3 = createSprite(width+100,height/2,10,10);
+        if(frameCount%70 === 0){
+            var enemy3 = createSprite(width+550,height/2,10,10);
             enemy3.addImage(this.enemy3Img);
             enemy3.scale = 0.5
             enemy3.y = random(100,height-100);
@@ -259,6 +267,7 @@ class Game{
         this.wave3Group.destroyEach();
         player.sprite.destroy();
         this.gameOver.visible = true;
+        this.bulletGroup.destroyEach();
 
 
         
@@ -269,6 +278,7 @@ class Game{
         this.wave3Group.destroyEach();
         player.sprite.destroy();
         this.win1.visible = true;
+        this.bullet.destroy();
 
     }
 
